@@ -350,6 +350,26 @@ ProjectName_LaTeX/
 
 ---
 
+### Phase 8: มาตรฐานการจัดรูปแบบตาราง (Academic Table Standards: X.X Above & Bold/Regular)
+
+1. **ตำแหน่งแคปชันตาราง (Caption Placement Above Table):**
+   - แคปชันตารางต้องอยู่ **ด้านบนของตารางเสมอ** (ต่างจากรูปภาพที่อยู่ด้านล่าง) โดยวางคำสั่ง `\caption{ชื่อตาราง}` และ `\label{tab:...}` ไว้ก่อนหน้า `\begin{tabularx}` หรือ `\begin{tabular}`
+2. **รูปแบบหมายเลขตาราง (Chapter-based X.X Numbering):**
+   - ตารางในเนื้อหาทุกบทต้องแสดงเป็นลำดับตามบทเรียน เช่น **ตารางที่ 1.1**, **ตารางที่ 1.2**, **ตารางที่ 2.1**
+   - กำหนดใน `.sty`: `\renewcommand{\thetable}{\thechapter.\arabic{table}}`
+3. **การจัดสไตล์ตัวอักษรแคปชันตาราง (Bold Label & Regular Title):**
+   - คำว่า **ตารางที่ X.X** ต้องเป็น **ตัวหนา** (`labelfont={bf}`)
+   - **ชื่อตาราง** ต้องเป็น **ตัวบาง/ตัวปกติ** (`textfont={normalfont}`)
+   - เว้นวรรคระหว่างเลขตารางกับชื่อตารางด้วย `\quad` (`\DeclareCaptionLabelSeparator{thaisep}{\quad}`)
+   - ตั้งค่าใน `.sty`:
+     ```latex
+     \captionsetup[table]{position=top, skip=6pt, labelfont={bf}, textfont={normalfont}, labelsep=thaisep}
+     ```
+4. **ตารางส่วนหน้าเล่ม (Frontmatter Tables):**
+   - สำหรับตารางที่ไม่ใช่เนื้อหาบทเรียน (เช่น ตารางแผนการสอน 15 สัปดาห์ ใน `syllabus.tex`) ให้ใช้ `\caption*{...}` เพื่อไม่ให้ถูกนับเป็นหมายเลขเดี่ยว (เช่น ตารางที่ 1) ปะปนในสารบัญตาราง (`\listoftables`)
+
+---
+
 ## Common Mistakes
 
 1. **ลืมตรวจสีก่อน compile** — ทุกครั้งที่เพิ่ม TikZ ใหม่ ให้ grep หาชื่อสีและตรวจใน `.sty`
