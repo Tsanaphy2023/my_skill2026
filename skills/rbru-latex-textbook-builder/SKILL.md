@@ -1,0 +1,278 @@
+---
+name: rbru-latex-textbook-builder
+description: >-
+  สร้าง พัฒนา และ format ตำราวิชาการ LaTeX มาตรฐานมหาวิทยาลัยราชภัฏรำไพพรรณี (RBRU)
+  ด้วย XeLaTeX + ภาษาไทยวิชาการ ครอบคลุม: integrate งานวิจัยผู้เขียน, เพิ่มบทเรียนใหม่
+  พร้อมภาพ TikZ, แก้ format แผนบริหารการสอน, ป้องกัน orphan word, เปลี่ยนชื่อตำราทั้งเล่ม
+  และ Compile PDF ด้วย xelatex + makeindex สำหรับตำราระดับ Masterclass
+---
+
+# RBRU LaTeX Textbook Builder
+
+## Overview
+
+Skill นี้ช่วย agent ในการสร้างและพัฒนาตำราวิชาการ LaTeX สำหรับ มหาวิทยาลัยราชภัฏรำไพพรรณี (RBRU)
+โดยใช้ XeLaTeX + Thai Unicode ครอบคลุมตั้งแต่การวิเคราะห์โครงสร้าง, integrate งานวิจัยผู้เขียน,
+เพิ่มเนื้อหาพร้อมภาพ TikZ, format มาตรฐาน, ไปจนถึง Compile PDF สมบูรณ์
+
+**Trigger:** ใช้เมื่อผู้ใช้บอกให้ "ปรับปรุง", "เพิ่มบท", "แก้ไขตำรา", "compile" โปรเจกต์
+LaTeX ที่ใช้ XeLaTeX กับภาษาไทย โดยเฉพาะโปรเจกต์ใน `/04_Education_Exam/Latex2026/`
+
+---
+
+## Dependencies
+
+- **modern-academic-textbook** — มาตรฐาน layout ตำราวิชาการ RBRU (Springer/MIT Press style)
+- **rbru-academic-formatter** — ระเบียบวิชาการและรูปแบบเอกสารมาตรฐาน มรภ.รำไพพรรณี
+- **tsana-writing-style** — รูปแบบการเขียนและภาษาไทยวิชาการของ ผศ.ดร.จิรภัทร จันทมาลี
+- **physics-textbook-layout-architect** — สถาปัตยกรรม layout ตำราเรียนระดับสากล
+
+---
+
+## Quick Start
+
+```
+ผู้ใช้: ปรับปรุงตำรา จุลชีววิทยาการเกษตร
+Agent: อ่าน SKILL.md → Phase 1 วิเคราะห์โครงสร้าง → Phase 2 เพิ่มเนื้อหา → Phase 3 format → Compile
+```
+
+---
+
+## Workflow
+
+### Phase 1: วิเคราะห์โครงสร้างโปรเจกต์
+
+1. อ่าน `main.tex` เพื่อดูโครงสร้างบท ไฟล์ที่ `\include` และ packages ที่ใช้
+2. อ่าน `styles/*.sty` เพื่อทำความเข้าใจ color palette, custom environments, font settings
+3. ตรวจ `\definecolor` ทุกตัว — หาก TikZ node อ้างอิงสีที่ไม่ได้นิยาม ให้เพิ่มใน `.sty` ทันที
+4. อ่าน chapter ที่เกี่ยวข้องกับ task ที่รับมา
+
+**สิ่งที่ต้องตรวจก่อนเริ่ม:**
+```bash
+# ตรวจ compile error เบื้องต้น
+xelatex -interaction=nonstopmode main.tex 2>&1 | grep "^!"
+# ตรวจไฟล์ที่มีอยู่ใน chapters/
+ls chapters/*.tex
+```
+
+---
+
+### Phase 2: Integrate งานวิจัยผู้เขียน
+
+1. **ค้นหางานวิจัย** จาก Google Scholar URL ของผู้เขียน — ใช้ `browser_subagent` เปิดหน้า Scholar
+2. **Map งานวิจัยกับบท:** สร้างตาราง mapping ว่างานวิจัยชิ้นใดเกี่ยวข้องกับบทใด
+3. **เพิ่ม citations ใน APA 7** รูปแบบ:
+   ```latex
+   % ในเนื้อหา
+   (จันทมาลี, 2567)
+   % ใน references.tex
+   จันทมาลี, จ. (2567). ชื่อบทความ. \textit{ชื่อวารสาร}, \textit{เล่ม}(ฉบับ), หน้า--หน้า.
+   \url{https://doi.org/...}
+   ```
+4. **เพิ่มเนื้อหาที่เกี่ยวข้อง** เข้า section ที่เหมาะสมในแต่ละบท โดยอ้างอิงงานวิจัย
+
+---
+
+### Phase 3: เพิ่มบทเรียนใหม่
+
+แต่ละบทต้องมีโครงสร้างมาตรฐาน:
+
+```latex
+\chapter{ชื่อบท}
+\label{chap:chXX}
+
+\section*{แผนบริหารการสอนประจำบทที่ XX}
+\addcontentsline{toc}{section}{แผนบริหารการสอนประจำบทที่ XX}
+
+\noindent\textbf{หัวข้อเนื้อหาประจำบท}
+\begin{enumerate}
+    \item ...
+\end{enumerate}
+
+\noindent\textbf{วัตถุประสงค์เชิงพฤติกรรม}
+\begin{enumerate}
+    \item ...
+\end{enumerate}
+
+\noindent\textbf{กิจกรรมการเรียนการสอน}
+\begin{enumerate}
+    \item ...
+\end{enumerate}
+
+\noindent\textbf{สื่อการเรียนการสอน}
+\begin{enumerate}
+    \item ...
+\end{enumerate}
+
+\noindent\textbf{การประเมินผล}
+\begin{enumerate}
+    \item ...
+\end{enumerate}
+
+\newpage
+
+% เนื้อหา sections...
+
+\section*{คำถามทบทวนท้ายบทที่ XX}
+\addcontentsline{toc}{section}{คำถามทบทวนท้ายบทที่ XX}
+\begin{enumerate}
+    \item ...
+\end{enumerate}
+\clearpage
+```
+
+**กฎ TikZ สำหรับภาพประกอบ:**
+- ตรวจว่าสีทุกตัวนิยามใน `.sty` ก่อนใช้ใน `\node` หรือ `\fill`
+- ใช้ `[H]` สำหรับ float position: `\begin{figure}[H]`
+- ใช้ `scale=0.88` หรือ `scale=0.90` เพื่อให้พอดีหน้า
+
+---
+
+### Phase 4: Format มาตรฐานภาษาไทยวิชาการ
+
+#### 4.1 แผนบริหารการสอน — ปรับทั้งเล่มด้วย Python script:
+
+```python
+import os, re
+
+PLAN_HEADERS = ["หัวข้อเนื้อหาประจำบท", "วัตถุประสงค์เชิงพฤติกรรม",
+                "กิจกรรมการเรียนการสอน", "สื่อการเรียนการสอน", "การประเมินผล"]
+
+def process(filepath):
+    with open(filepath, 'r', encoding='utf-8') as f:
+        content = f.read()
+    for h in PLAN_HEADERS:
+        content = re.sub(r'(?<!noindent\\)\\textbf\{' + re.escape(h) + r'\}',
+                         r'\\noindent\\textbf{' + h + r'}', content)
+    # itemize → enumerate ใน plan section
+    def fix_plan(m):
+        block = m.group(0)
+        block = block.replace(r'\begin{itemize}', r'\begin{enumerate}')
+        block = block.replace(r'\end{itemize}', r'\end{enumerate}')
+        return block
+    content = re.sub(r'(\\section\*\{แผนบริหารการสอน.*?\\newpage)', fix_plan,
+                     content, flags=re.DOTALL)
+    with open(filepath, 'w', encoding='utf-8') as f:
+        f.write(content)
+```
+
+#### 4.2 ภาษาไทยวิชาการ — กฎที่ต้องปฏิบัติ:
+
+| ผิด | ถูก |
+|-----|-----|
+| `ได้แก่:` | `ได้แก่` (ลบ colon) |
+| `ดังนี้:` | `ดังนี้` (ลบ colon) |
+| `\textbf{หัวข้อ}` (มี indent) | `\noindent\textbf{หัวข้อ}` |
+| `\begin{itemize}` ในแผนบริหาร | `\begin{enumerate}` |
+
+#### 4.3 ป้องกัน Orphan Word:
+
+เพิ่มใน `styles/*.sty`:
+```latex
+\XeTeXlinebreakskip = 0pt plus 2pt minus 0.5pt
+\setlength{\emergencystretch}{2.5em}
+```
+
+สำหรับ item ที่ลงท้ายด้วย "ได้" โดดๆ ให้ขยายเป็น "ได้อย่างถูกต้อง" หรือ "ได้อย่างครบถ้วน"
+
+#### 4.4 การเปลี่ยนชื่อตำราทั้งเล่ม:
+
+```python
+REPLACEMENTS = [
+    ("จุลชีววิทยาสำหรับการเกษตร", "จุลชีววิทยาการเกษตร"),
+    ("MICROBIOLOGY FOR AGRICULTURE", "AGRICULTURAL MICROBIOLOGY"),
+    ("Microbiology for Agriculture", "Agricultural Microbiology"),
+]
+# วน loop ทุก .tex และ .sty ใน project directory
+```
+
+#### 4.5 การย่อหน้า 1 Tab (1.25 cm) และการจัดตำแหน่งเนื้อหาให้ตรงกับชื่อหัวข้อ:
+- ระเบียบวิชาการ มรภ.รำไพพรรณี กำหนดให้พารากราฟเนื้อหาย่อหน้า 1 Tab = `1.25cm`
+- ต้องใช้ `\RequirePackage{indentfirst}` เพื่อบังคับให้ย่อหน้าตั้งแต่พารากราฟแรกใต้หัวข้อ (โดยปกติ LaTeX จะไม่ย่อหน้าพารากราฟแรก)
+- กำหนด `\setlength{\parindent}{1.25cm}` และ `\setlength{\parskip}{4pt plus 1pt minus 1pt}`
+- จัดกล่องเลขหัวข้อด้วย `\makebox[1.25cm][l]{\thesection}` ใน `\titleformat{\section}` เพื่อให้ตัวอักษรแรกของชื่อหัวข้อเริ่มที่ระยะ 1.25 cm พอดี ซึ่งจะตรงกับแนวขอบซ้ายของบรรทัดแรกของเนื้อหา (1 Tab) อย่างสมบูรณ์แบบ
+- ต้องใช้ `\titlespacing{\section}` (แบบไม่มีเครื่องหมาย `*`) เพื่อป้องกันไม่ให้คำสั่ง suppress indent ไปยกเลิกการย่อหน้าของ `indentfirst`
+
+---
+
+### Phase 5: Compile PDF
+
+```bash
+# Pass 1 — สร้าง .aux, .idx
+xelatex -interaction=nonstopmode main.tex
+
+# Pass 2 — สร้าง index
+makeindex main.idx
+
+# Pass 3 — รวม index เข้า PDF
+xelatex -interaction=nonstopmode main.tex
+
+# ตรวจ error
+xelatex -interaction=nonstopmode main.tex 2>&1 | grep -E "(Output written|^!|Fatal)"
+```
+
+**Error ที่พบบ่อยและวิธีแก้:**
+
+| Error | สาเหตุ | วิธีแก้ |
+|-------|--------|---------|
+| `Undefined color agriXxx` | ใช้ชื่อสีที่ไม่ได้นิยาม | เพิ่ม `\definecolor{agriXxx}{HTML}{RRGGBB}` ใน `.sty` |
+| `! Package fontspec Error` | Font ไม่มีในระบบ | ตรวจ `fc-list | grep Sarabun` |
+| `Runaway argument` | `\\` ซ้ำซ้อนใน TikZ node | ตรวจ `\\\\` ใน node text |
+| `Missing $ inserted` | ตัวอักษรพิเศษใน text mode | ใส่ `$...$` หรือ `\text{...}` |
+
+---
+
+### Phase 6: Push GitHub
+
+```bash
+cd /path/to/Latex2026
+git add 07_*/
+git commit -m "feat(microbio): สรุปการเปลี่ยนแปลง"
+git push origin main
+```
+
+---
+
+## โครงสร้างไฟล์มาตรฐาน RBRU
+
+```
+ProjectName_LaTeX/
+├── main.tex                    # Entry point — \include chapters
+├── styles/
+│   └── projectname_style.sty   # สี, fonts, custom environments
+├── frontmatter/
+│   ├── cover.tex               # ปก TikZ
+│   ├── title.tex               # หน้าชื่อเรื่อง
+│   ├── preface.tex             # คำนำ
+│   ├── acknowledgements.tex    # กิตติกรรมประกาศ
+│   └── syllabus.tex            # คำอธิบายรายวิชา
+├── chapters/
+│   ├── introduction.tex        # บทนำ
+│   ├── chapter1.tex ... chapterN.tex
+│   └── chapter10.tex           # บทใหม่ล่าสุด
+├── appendices/
+│   └── appendixA.tex ...
+└── backmatter/
+    ├── references.tex          # บรรณานุกรม APA 7
+    └── biography.tex           # ประวัติผู้เขียน
+```
+
+---
+
+## Custom Environments ที่ใช้บ่อย
+
+```latex
+\begin{definitionbox}{ชื่อกล่อง}   % กล่องนิยามศัพท์
+\begin{casestudy}{ชื่อกรณีศึกษา}  % กล่องกรณีศึกษา
+\begin{agribox}{ชื่อกล่อง}        % กล่องข้อมูลเกษตร/วิทยาศาสตร์
+```
+
+---
+
+## Common Mistakes
+
+1. **ลืมตรวจสีก่อน compile** — ทุกครั้งที่เพิ่ม TikZ ใหม่ ให้ grep หาชื่อสีและตรวจใน `.sty`
+2. **Colon ท้ายประโยค** — ภาษาไทยวิชาการไม่ใช้ `:` ท้าย `ได้แก่` และ `ดังนี้`
+3. **itemize แทน enumerate** ในแผนบริหารการสอน — ใช้ enumerate เสมอสำหรับ 4 หัวข้อหลัก
+4. **ลืม \noindent** — หัวข้อในแผนบริหารการสอนต้องชิดซ้ายเสมอ
+5. **Compile ครั้งเดียว** — ต้อง compile อย่างน้อย 2 รอบเพื่อให้ ToC, index และ references ถูกต้อง
