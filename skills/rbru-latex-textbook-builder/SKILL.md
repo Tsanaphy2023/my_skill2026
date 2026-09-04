@@ -255,6 +255,24 @@ REPLACEMENTS = [
   ```
   เพื่อบังคับให้คำว่า "การ" และ "หดสั้น" อยู่บรรทัดเดียวกันเสมอ
 
+#### 4.10 การจัดการหัวกระดาษวิ่ง (Running Headers without Trailing Dot):
+- ในคลาส `book.cls` ค่าปริยายของ `\chaptermark` จะแทรกจุดมหัพภาค (`.`) หลังหมายเลขบท เช่น "บทที่ 1. บทนำ..."
+- ตามมาตรฐานวิชาการ มรภ.รำไพพรรณี **ต้องลบจุด (`.`) หลังหมายเลขบทออก** ให้เหลือเฉพาะการเว้นวรรค 1 quad
+- ต้องนิยาม `\chaptermark` ใหม่ใน `.sty`:
+  ```latex
+  \renewcommand{\chaptermark}[1]{%
+      \markboth{%
+          \ifnum \c@secnumdepth >\m@ne
+              \if@mainmatter
+                  \chaptertitlename\ \thechapter\quad
+              \fi
+          \fi
+          #1%
+      }{}%
+  }
+  ```
+  ผลลัพธ์: หัวกระดาษวิ่งจะแสดงเป็น "บทที่ 1   บทนำ..." หรือ "ภาคผนวก ก   ..." อย่างสง่างามและไร้จุดปะปน
+
 ---
 
 ### Phase 5: Compile PDF
