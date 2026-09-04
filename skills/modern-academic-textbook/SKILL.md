@@ -1,0 +1,172 @@
+---
+name: modern-academic-textbook
+description: สกิลการจัดทำและเรนเดอร์ตำราวิชาการ หนังสือเรียน และ E-Book ระดับ Masterclass สไตล์ Modern Academic (Springer / MIT Press / Cambridge) กั้นซ้าย 1.5 นิ้ว หน้าคู่ เริ่มบทใหม่หน้าคี่ แผนผังเวกเตอร์ SVG คมชัด 100% ไร้คราบ AI พร้อมระบบเรนเดอร์ PDF และ EPUB 3.0 อัตโนมัติ
+---
+
+# 📚 Modern Academic Textbook Architecture
+
+**Modern Academic Textbook** คือระเบียบวิธีและชุดเครื่องมืออัตโนมัติสำหรับการผลิตและจัดพิมพ์ **ตำราวิชาการ หนังสือเรียน และ E-Book คุณภาพสูงระดับโลก (Bestseller & High-Grade Academic Publication)** ผสมผสานความลุ่มลึกทางวิชาการตามมาตรฐานกระทรวง อว. เข้ากับสุนทรียศาสตร์การออกแบบร่วมสมัยสไตล์ **MIT Press, Springer, Cambridge University Press, และ O'Reilly**
+
+---
+
+## 📐 1. สถาปัตยกรรมการจัดหน้าและขอบกระดาษ (Page Geometry & Layout Rules)
+
+ในการจัดทำหนังสือและเอกสารตำราฉบับสมบูรณ์ ต้องบังคับใช้กฎเรขาคณิตของหน้ากระดาษดังนี้:
+
+### 📏 A. ระยะขอบกระดาษมาตรฐานโรงพิมพ์ (Print Margins)
+* **กั้นใน / กั้นซ้าย (Inside Margin / Left Gutter):** `1.5 นิ้ว (38.1 mm)` เพื่อรองรับการเข้าเล่มสันกาว (Perfect Binding) หรือเย็บกี่
+* **ขอบบน (Top Margin):** `1.0 นิ้ว (25.4 mm)`
+* **ขอบล่าง (Bottom Margin):** `1.0 นิ้ว (25.4 mm)`
+* **ขอบนอก / ขอบขวา (Outside Margin / Right):** `1.0 นิ้ว (25.4 mm)`
+
+### 📖 B. การจัดหน้าคู่แบบสลับด้าน (Two-Page Spread Layout)
+* **หน้าซ้าย (หน้าคู่ / Even Pages - `@page :left`):**
+  * ขอบซ้าย (Outside): `1.0 in`, ขอบขวา (Inside): `1.5 in`
+  * **Running Header ด้านซ้าย:** แสดงชื่อหนังสือหลัก (เช่น *วิทยาการคำนวณ 1 รากฐานแนวคิดเชิงคำนวณ*)
+  * **เลขหน้า:** ชิดขอบขวาเสมอ (`text-align: right`)
+* **หน้าขวา (หน้าคี่ / Odd Pages - `@page :right`):**
+  * ขอบซ้าย (Inside): `1.5 in`, ขอบขวา (Outside): `1.0 in`
+  * **Running Header ด้านขวา:** แสดงชื่อบทเรียน (เช่น *บทที่ 2 การออกแบบขั้นตอนวิธีและผังงานมาตรฐาน*)
+  * **เลขหน้า:** ชิดขอบขวาเสมอ (`text-align: right`)
+
+### 🌟 C. หน้าเปิดบทใหม่ (Chapter Opener on Odd Pages)
+* **บังคับเริ่มบทใหม่ที่หน้าเลขคี่เสมอ:** กำหนด `break-before: right;` หรือ `page-break-before: right;`
+* **รูปแบบหน้าเปิดบทที่โดดเด่น (Hero Chapter Opener):**
+  * การ์ดหัวบท Gradient สีน้ำเงินเข้ม-เนวีสเลท (`#091328` ถึง `#1e293b`) พร้อมเส้นขอบซ้ายหนาสีฟ้าเทอร์ควอยซ์ (`#0ea5e9`)
+  * ป้ายแบดจ์หัวบท **`CHAPTER XX • วิทยาการคำนวณ`**
+  * แสดงข้อมูลผู้เขียน สังกัด และรหัสวิชา
+  * **ซ่อน Running Header ที่หัวกระดาษในหน้าแรกของบท** เพื่อความสะอาดตา
+
+---
+
+## ✍️ 2. กฎการเขียนภาษาไทยวิชาการไร้คราบ AI (Anti-AI-Slop & Academic Voice)
+
+ตำราต้องมีความสละสลวยตามแบบแผนภาษาไทยวิชาการระดับสูง โดยกำจัดจุดบกพร่องและคำบอกใบ้ของ AI (AI-Tell Patterns) ตามมาตรฐาน `anti-ai-slop`:
+
+### 🚫 A. บัญชีดำคำและโครงสร้างประโยค AI (Denylist Vocabulary & Clichés)
+* **คำฟุ่มเฟือยและคำฮิตติดปากของ AI:**
+  * ❌ ห้ามใช้: *delve (เจาะลึก/สำรวจลึกซึ้งพร่ำเพรื่อ), tapestry (สายใย/ภาพรวมที่ถักทอ), crucial/pivotal (สิ่งสำคัญยิ่งยวดแบบซ้ำซาก), seamless (อย่างราบรื่นไร้รอยต่อ), robust (แข็งแกร่งทนทานในทุกบริบท), leverage (ยกระดับ/ใช้ประโยชน์พร่ำเพรื่อ), elevate, navigate (นำทาง/ฝ่าฟันความท้าทาย), "ในขอบเขตของ...", "สิ่งสำคัญที่ต้องทราบคือ..."*
+  * ❌ ห้ามใช้คำเปิดฉากสำเร็จรูป: *"ในโลกยุคปัจจุบันที่หมุนไปอย่างรวดเร็ว...", "ในยุคดิจิทัลที่ก้าวล้ำ..."*
+  * ❌ ห้ามใช้โครงสร้างประโยคแบบคู่สมมาตร AI: *"ไม่เพียงแต่เป็น X เท่านั้น แต่ยังเป็น Y อีกด้วย"* (ให้ใช้ประโยคยืนยันตรงประเด็น)
+* **กฎภาษาไทยวิชาการเฉพาะ:**
+  * ❌ ห้ามมีเครื่องหมายทวิภาค (`:`) ในภาษาไทย: ไม่ใช้ `ผู้เขียน:`, `วัตถุประสงค์:`, `ดังนี้:` $\implies$ ✅ ให้ใช้ `ผู้เขียน`, `วัตถุประสงค์`, `ดังนี้` (เว้นวรรค 1 เคาะ)
+  * ❌ ห้ามใส่เครื่องหมายคำพูด (`" "`, `“ ”`) พร่ำเพรื่อกับคำศัพท์ทั่วไป
+  * ❌ ตัดคำแปลภาษาอังกฤษในวงเล็บซ้ำซ้อน: ใส่เฉพาะในตารางนิยามศัพท์หรือการกล่าวถึงครั้งแรกเท่านั้น
+
+### 🎵 B. ความหลากหลายของจังหวะประโยค (Sentence Rhythm & Burstiness)
+* **ธรรมชาติของมนุษย์มีความแปรผัน (Burstiness):** ประโยคต้องมีทั้งประโยคสั้นกระชับ สลับกับประโยคอธิบายยาวอย่างเป็นธรรมชาติ
+* **หลีกเลี่ยงความยาวประโยคที่สม่ำเสมอเกินไป (AI Uniformity):** ไม่เขียนประโยคที่มีความยาว $18\text{--}22$ คำติดต่อกันเกิน 3 ประโยค
+
+### ⚖️ C. การสงวนข้อความกำกวมที่มีหลักฐานรองรับ (Warranted Hedges vs Empty Hedging)
+* **ตัดคำหลบเลี่ยงกลวงๆ (Empty Hedging):** ตัดวลีเช่น *"อาจกล่าวได้ว่าโดยทั่วไปแล้ว", "ในหลายๆ กรณีอาจเป็นไปได้ว่า"*
+* **คงการระบุความไม่แน่นอนทางวิทยาศาสตร์ที่แท้จริง (Warranted Uncertainty):** ผลการทดลองที่ยังเป็นสมมติฐานหรือมีเงื่อนไขจำกัด ให้คงการระบุขอบเขตความเชื่อมั่นไว้อย่างเคร่งครัดตามหลักวิชาการ
+
+---
+
+## 🎨 3. การแสดงผลแผนผังเวกเตอร์ SVG และสื่อภาพ (100% Vector Crispness)
+
+* **ห้ามปล่อยบล็อกโค้ด Mermaid (````mermaid ... ````) ค้างไว้ในหนังสือ:**
+  * ต้องแปลงผังงาน ทฤษฎี และโฟลว์ชาร์ตทั้งหมดเป็น **ไฟล์ภาพเวกเตอร์ SVG คุณภาพสูง** ในโฟลเดอร์ `assets/diagrams/`
+  * ฝังภาพด้วยแท็ก HTML/Markdown พร้อมคำบรรยายใต้ภาพ:
+    ```html
+    <div align="center" style="margin: 24px 0; page-break-inside: avoid;">
+      <img src="../assets/diagrams/ch02_fig01_algorithm_properties.svg" alt="แผนผังขั้นตอนวิธี" style="max-width: 100%; max-height: 480px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06);" />
+      <p style="color: #64748b; font-size: 0.88em; margin-top: 6px;"><em>ภาพที่ 2.1 แผนผังโครงสร้าง 5 คุณสมบัติของขั้นตอนวิธีที่ดี</em></p>
+    </div>
+    ```
+* **การป้องกันองค์ประกอบแตกข้ามหน้า (Page-fit Control):**
+  * ตาราง (`table`), กล่องโค้ด (`pre`), กล่องข้อความ (`.alert-box`, `blockquote`), และรูปภาพ (`img`) ต้องกำหนด `page-break-inside: avoid;` เสมอ
+
+---
+
+## 💻 4. โค้ดคอมพิวเตอร์และสมการคณิตศาสตร์
+
+* **Syntax Highlighting:** ใช้ชุดสี **Atom One Dark** ควบคู่กับฟอนต์ **Fira Code** พร้อมระบุภาษาอย่างชัดเจน
+* **Mathematical Typography:** ใช้ **KaTeX** สำหรับเรนเดอร์สมการคณิตศาสตร์ทั้งแบบ Inline (`$...$`) และ Display Block (`$$...$$`) คมชัดระดับ Vector
+
+---
+
+## 🚀 5. คำสั่งและสคริปต์คอมไพเลอร์อัตโนมัติ (Automated Build Commands)
+
+### 📄 คำสั่งเรนเดอร์ Academic Luxury PDF (Chrome Headless)
+```bash
+/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome \
+  --headless --disable-gpu --no-sandbox \
+  --run-all-compositor-stages-before-draw --virtual-time-budget=4000 \
+  --print-to-pdf="dist_ebooks/book1_computing_science.pdf" \
+  --no-pdf-header-footer \
+  "file:///Applications/XAMPP/xamppfiles/htdocs/rbrumooc/cs2026_series/dist_ebooks/chapter02_style1_academic_mit_springer.html"
+```
+
+### 📱 คำสั่งสร้าง EPUB 3.0 E-Book (Pandoc)
+```bash
+pandoc input_book.md -o output_book.epub \
+  --epub-cover-image="assets/book1_images/fig_cover_book1.jpg" \
+  --metadata title="วิทยาการคำนวณ 1 รากฐานแนวคิดเชิงคำนวณ" \
+  --metadata author="ผู้ช่วยศาสตราจารย์ ดร.ชีวะ ทัศนา" \
+  --metadata publisher="สำนักพิมพ์มหาวิทยาลัยราชภัฏรำไพพรรณี" \
+  --metadata language="th" \
+  --toc --webtex
+```
+
+---
+
+## 📊 5. สถาปัตยกรรมเอกสาร LaTeX วิชาการ (LaTeX Textbook Architecture)
+
+ในการจัดทำตำราวิชาการระดับ Masterclass ด้วย LaTeX (XeLaTeX) ต้องยึดถือข้อกำหนดโครงสร้างดังนี้:
+
+### A. ตารางทางวิชาการมาตรฐานสากล (Universal Academic Tables)
+* ใช้แพ็กเกจ `booktabs` (`\toprule`, `\midrule`, `\bottomrule`)
+* **ข้อห้ามเด็ดขาด:** ห้ามใช้เส้นคั่นแนวตั้ง (`|`) ในตารางวิชาการระดับสูง
+* **ตำแหน่ง Caption:** คำบรรยายตาราง (`\caption{...}`) ต้องอยู่ **ด้านบน** ของตารางเสมอ (ต่างจากภาพที่อยู่ด้านล่าง)
+* กำหนด `\label{tab:...}` เพื่อเชื่อมโยงการอ้างอิงข้ามส่วนและการลงทะเบียนในสารบัญตารางอัตโนมัติ
+
+### B. สารบัญภาพและสารบัญตาราง (List of Figures & List of Tables)
+* กำหนดชื่อภาษาไทยมาตรฐาน:
+  ```latex
+  \renewcommand{\listfigurename}{สารบัญภาพ}
+  \renewcommand{\listtablename}{สารบัญตาราง}
+  ```
+* เชื่อมโยงลงสารบัญหลัก (`\tableofcontents`) อย่างถูกต้อง:
+  ```latex
+  \clearpage\phantomsection\addcontentsline{toc}{chapter}{\listfigurename}\listoffigures
+  \clearpage\phantomsection\addcontentsline{toc}{chapter}{\listtablename}\listoftables
+  ```
+
+### C. ระบบดัชนีสืบค้นคำสำคัญ 2 ภาษา (Bilingual Indexing System)
+* ใช้แพ็กเกจ `imakeidx` จัดเลย์เอาต์ 2 คอลัมน์ เชื่อมโยงลง TOC:
+  ```latex
+  \RequirePackage{imakeidx}
+  \makeindex[columns=2, title=ดัชนีสืบค้นคำสำคัญ, intoc]
+  ```
+* แทรกคำค้นทั้งภาษาไทยและภาษาอังกฤษในทุกบทเรียน:
+  `\index{คำศัพท์ภาษาไทย (English Term)}` และ `\index{English Term}`
+* วาง `\clearpage\printindex` ในส่วน `\backmatter` ท้ายเล่ม
+* การคอมไพล์ที่สมบูรณ์แบบ:
+  ```bash
+  xelatex -interaction=nonstopmode main.tex && makeindex main.idx && xelatex -interaction=nonstopmode main.tex
+  ```
+
+### D. กล่องหัวบทวิชาการระดับ Masterclass (Academic Chapter Banner Architecture)
+* ใช้ `tcolorbox` แบบเต็มหน้ากระดาษ (`width=\textwidth`) ร่วมกับ TikZ Vector Underlay แบบโปร่งแสง
+* พื้นหลังไล่ระดับสีน้ำเงินเข้มหรูหรา ขอบทองด้านขวาหนา 4pt (`borderline east={4pt}{0pt}{rbruGold}`)
+* การจัดวางชิดขอบขวา (`\raggedleft`):
+  - **"บทที่ X"**: ขนาดใหญ่ 2 เท่าที่ **`44pt`** (`\fontsize{44}{50}\selectfont\bfseries\color{white}`)
+  - **เส้นคั่นทอง**: ยาว 0.50\textwidth หนา 2pt
+  - **"ชื่อบท" (Numbered Chapters)**: ปรับขนาดสมดุลที่ **`25pt`** (`\fontsize{25}{31}\selectfont\bfseries\color{white}`) สวยงาม ไม่แออัด และตัดคำอัตโนมัติอย่างลงตัว
+  - **หัวบทไม่มีหมายเลข (Unnumbered Chapters)**: ใช้ขนาด **`29pt`** (`\fontsize{29}{35}\selectfont\bfseries\color{white}`) สำหรับคำนำ สารบัญ บรรณานุกรม ดัชนีสืบค้น และประวัติผู้เขียน
+
+### E. ภาคผนวกและระบบนับเลขวิชาการ (Appendix Architecture)
+* ใน LaTeX `book.cls` ต้องวางคำสั่ง `\appendix` **ก่อน** `\backmatter` เสมอ
+* กำหนดระบบนับเลขบทเป็นอักษรไทย: `\renewcommand{\thechapter}{ก}`
+* ผลลัพธ์: จะได้รับกล่องแบนเนอร์หัวบทเต็มรูปแบบ **"ภาคผนวก ก"** (44pt) และชื่อบท "สูตรคณิตศาสตร์และเอกลักษณ์เวกเตอร์พื้นฐาน" (25pt) พร้อมรักษาระดับการนับเลขหัวข้อย่อยเป็น **ก.1, ก.1.1** ถูกต้อง
+
+### F. หน้าประวัติผู้เขียนระดับ Masterclass (Executive Monograph Biography)
+* บังคับจัดวางให้สมบูรณ์จบใน **1 หน้าเดียว (Single Page Fit)** ปราศจากการล้นหน้า
+* **ภาพถ่ายทรงกลม:** ภาพถ่ายผู้เขียนทรงกลมล้อมกรอบทอง 2pt (`draw=rbruGold, line width=2pt`) พร้อมเงาตกกระทบแบบโปร่งแสง
+* **ตำแหน่งและชื่อ:** ระบุ "ผู้ช่วยศาสตราจารย์ ดร.ชีวะ ทัศนา"
+* **การแบ่งเลย์เอาต์:**
+  - ส่วนบน: ซ้ายภาพถ่าย (`0.28\textwidth`) ขนานกับชื่อ ตำแหน่ง สังกัด และอีเมล (`0.69\textwidth`)
+  - คั่นด้วยเส้น horizontal rule สีสุภาพ
+  - ส่วนล่างแบบสองคอลัมน์สมดุล (`0.48\textwidth` ทั้งสองฝั่ง): ฝั่งซ้ายบรรจุ **ประวัติการศึกษา** และ **ภาระงานสอนประจำ** ฝั่งขวาบรรจุ **ความเชี่ยวชาญและงานวิจัยที่สนใจ**
+
