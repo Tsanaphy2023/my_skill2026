@@ -218,6 +218,28 @@ REPLACEMENTS = [
     \renewcommand{\subsubsection}{\global\setlength{\parindent}{3.75cm}\rbruorigsubsubsection}
     ```
 
+#### 4.7 แผนบริหารการสอนประจำบท (Lesson Plan per Chapter):
+- ทุกบทเรียนต้องมี **แผนบริหารการสอนประจำบทที่ X** (`\section*{แผนบริหารการสอนประจำบทที่ X}`) พร้อม `\addcontentsline{toc}{section}{แผนบริหารการสอนประจำบทที่ X}`
+- ประกอบด้วย 5 องค์ประกอบหลักตามมาตรฐาน RBRU (ห้ามใส่เครื่องหมาย `:` ท้ายหัวข้อ):
+  1. `\noindent\textbf{หัวข้อเนื้อหาประจำบท}` (ใช้ `\begin{enumerate}`)
+  2. `\noindent\textbf{วัตถุประสงค์เชิงพฤติกรรม}` (ใช้ `\begin{enumerate}`)
+  3. `\noindent\textbf{กิจกรรมการเรียนการสอน}` (ใช้ `\begin{enumerate}`)
+  4. `\noindent\textbf{สื่อการเรียนการสอน}` (ใช้ `\begin{enumerate}`)
+  5. `\noindent\textbf{การประเมินผล}` (ใช้ `\begin{enumerate}`)
+- จบด้วย `\newpage` ก่อนเริ่มเนื้อหาหัวข้อแรกของบทเรียน
+
+#### 4.8 รูปแบบคำบรรยายภาพและตาราง (Caption Typography):
+- **มาตรฐานตัวอักษร:** คำนำหน้า (Label) เช่น "ภาพที่ X.X" หรือ "ตารางที่ X.X" ต้องเป็น **ตัวหนา** (`labelfont={bf}`) ส่วนข้อความชื่อภาพและตาราง ต้องเป็น **ตัวบางปกติ** (`textfont={normalfont}`)
+- ไม่ใส่เครื่องหมายทวิภาค (`:`) ให้ใช้การเว้นวรรค 1 quad (`labelsep=thaisep` ที่นิยาม `\DeclareCaptionLabelSeparator{thaisep}{\quad}`)
+- กำหนดใน `styles/*.sty`:
+```latex
+\RequirePackage{caption}
+\DeclareCaptionLabelSeparator{thaisep}{\quad}
+\captionsetup{labelsep=thaisep}
+\captionsetup[table]{position=top, skip=6pt, labelfont={bf,color=primaryThemeColor}, textfont={normalfont}, labelsep=thaisep}
+\captionsetup[figure]{position=bottom, skip=8pt, labelfont={bf,color=primaryThemeColor}, textfont={normalfont}, labelsep=thaisep}
+```
+
 ---
 
 ### Phase 5: Compile PDF
