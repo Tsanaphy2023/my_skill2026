@@ -193,6 +193,31 @@ REPLACEMENTS = [
 - จัดกล่องเลขหัวข้อด้วย `\makebox[1.25cm][l]{\thesection}` ใน `\titleformat{\section}` เพื่อให้ตัวอักษรแรกของชื่อหัวข้อเริ่มที่ระยะ 1.25 cm พอดี ซึ่งจะตรงกับแนวขอบซ้ายของบรรทัดแรกของเนื้อหา (1 Tab) อย่างสมบูรณ์แบบ
 - ต้องใช้ `\titlespacing{\section}` (แบบไม่มีเครื่องหมาย `*`) เพื่อป้องกันไม่ให้คำสั่ง suppress indent ไปยกเลิกการย่อหน้าของ `indentfirst`
 
+#### 4.6 การจัดหัวข้อย่อย (Subsection เช่น 1.4.1) และการย่อหน้าเนื้อหาตามระดับลำดับชั้น (Hierarchical Indentation):
+- **ตัดภาษาอังกฤษในวงเล็บออกจากชื่อบท (Chapter Titles):** ชื่อบทเรียนในกล่องแบนเนอร์ต้องเป็นภาษาไทยล้วน เช่น `\chapter{ทฤษฎีสัมพัทธภาพพิเศษ}` (ตัด `(Special Relativity)` ออก)
+- **หัวข้อย่อยระดับที่ 2 (`\subsection` เช่น 1.4.1):**
+  - กำหนดให้ตัวเลขหัวข้อย่อยย่อหน้าเข้าไป 1 Tab (`1.25cm`):
+    ```latex
+    \titlespacing{\subsection}{1.25cm}{14pt plus 3pt minus 2pt}{6pt plus 2pt minus 1pt}
+    ```
+  - จัดกล่องตัวเลขหัวข้อย่อยด้วย `\makebox[1.25cm][l]{\thesubsection}` ทำให้ตัวอักษรแรกของชื่อหัวข้อย่อยเริ่มที่ระยะ `2.50cm` (2 Tabs)
+  - **ปรับย่อหน้าของเนื้อหาตามระดับหัวข้อย่อย (Dynamic Parindent):**
+    เนื้อหาใต้ `\subsection` จะต้องย่อหน้า 2 Tabs (`2.50cm`) เพื่อให้ขอบซ้ายของบรรทัดแรกตรงกับตัวอักษรแรกของชื่อหัวข้อย่อย
+    โดยใช้ Command Wrappers ครอบเพื่อป้องกันไม่ให้แพ็กเกจคณิตศาสตร์ (`mathtools`) รีเซ็ตค่า:
+    ```latex
+    \let\rbruorigchapter\chapter
+    \renewcommand{\chapter}{\global\setlength{\parindent}{1.25cm}\rbruorigchapter}
+
+    \let\rbruorigsection\section
+    \renewcommand{\section}{\global\setlength{\parindent}{1.25cm}\rbruorigsection}
+
+    \let\rbruorigsubsection\subsection
+    \renewcommand{\subsection}{\global\setlength{\parindent}{2.50cm}\rbruorigsubsection}
+
+    \let\rbruorigsubsubsection\subsubsection
+    \renewcommand{\subsubsection}{\global\setlength{\parindent}{3.75cm}\rbruorigsubsubsection}
+    ```
+
 ---
 
 ### Phase 5: Compile PDF
