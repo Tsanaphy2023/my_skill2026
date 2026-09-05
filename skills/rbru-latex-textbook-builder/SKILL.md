@@ -320,30 +320,53 @@ xelatex -interaction=nonstopmode main.tex 2>&1 | grep -E "(Output written|^!|Fat
 | Error | สาเหตุ | วิธีแก้ |
 |-------|--------|---------|
 | `Undefined color agriXxx` | ใช้ชื่อสีที่ไม่ได้นิยาม | เพิ่ม `\definecolor{agriXxx}{HTML}{RRGGBB}` ใน `.sty` |
-| `! Package fontspec Error` | Font ไม่มีในระบบ | ตรวจ `fc-list | grep Sarabun` |
-| `Runaway argument` | `\\` ซ้ำซ้อนใน TikZ node | ตรวจ `\\\\` ใน node text |
-| `Missing $ inserted` | ตัวอักษรพิเศษใน text mode | ใส่ `$...$` หรือ `\text{...}` |
+| `! Package fontspec Error` | Font ไม่มีในระบบ | ตร�    - ห้องปฏิบัติการทัศนศาสตร์เสมือน (Virtual Optics Bench), ถังคลื่นเสมือน, วงจรอิเล็กทรอนิกส์, และการจำลองระบบดาวคู่ทางดาราศาสตร์ฟิสิกส์ (Roche Potentials)
 
 ---
 
-### Phase 6: Push GitHub
+### Phase 13: มาตรฐานเลย์เอาต์จุลชีววิทยาการเกษตรและชีววิทยา (Agricultural Microbiology Master Style)
+(อ้างอิงโปรเจกต์ต้นแบบ: `/07_Microbiology_for_Agriculture_LaTeX`)
 
-```bash
-cd /path/to/Latex2026
-git add 07_*/
-git commit -m "feat(microbio): สรุปการเปลี่ยนแปลง"
-git push origin main
-```
+1. **อัตลักษณ์แม่สีและการออกแบบสภาพแวดล้อม (Bio & Earth Identity):**
+   - โทนสีหลัก: `agriGreen` (#1B5E20), `agriLeaf` (#2E7D32), `agriEarth` (#4E342E), `agriGold` (#D97706), `agriMint` (#E8F5E9), `agriSoftBg` (#F9FBE7), `agriBlue` (#0277BD), `agriRed` (#C62828), `agriSlate` (#37474F)
+   - กล่องวิชาการเฉพาะทาง:
+     - `\begin{definitionbox}{หัวข้อนิยาม}` — กล่องนิยามศัพท์จุลชีววิทยา
+     - `\begin{agribox}{หัวข้อประยุกต์}` — กล่องเทคโนโลยีเกษตรกรรมเชิงปฏิบัติ
+     - `\begin{casestudy}{ชื่องานวิจัย}` — กล่องกรณีศึกษางานวิจัย
+     - `\begin{warningbox}{ข้อควรระวัง}` — กล่องเตือนภัยโรคพืชและการจัดการ
+     - `\begin{worked}{ตัวอย่างที่ X.Y}` — กล่องการคำนวณและวิเคราะห์ผล
+2. **การตั้งค่าหัวกระดาษแบบไม่มีจุด (No Trailing Dot in Header):**
+   - กำหนด `\chaptermark` เพื่อป้องกันไม่ให้มีเครื่องหมายจุด (`.`) หลัง `บทที่ X` ในหัวกระดาษ:
+     ```latex
+     \renewcommand{\chaptermark}[1]{%
+         \markboth{%
+             \ifnum \c@secnumdepth >\m@ne
+                 \if@mainmatter
+                     \chaptertitlename\ \thechapter\quad
+                 \fi
+             \fi
+             #1%
+         }{}%
+     }
+     ```
+   - หัวกระดาษและท้ายกระดาษมาตรฐาน:
+     ```latex
+     \fancyhead[LE]{\small\bfseries\color{agriGreen} \thepage \quad \textbar \quad จุลชีววิทยาการเกษตร}
+     \fancyhead[RO]{\small\bfseries\color{agriGreen} \leftmark \quad \textbar \quad \thepage}
+     \fancyfoot[C]{\small\color{slateGrey} มหาวิทยาลัยราชภัฏรำไพพรรณี}
+     ```
 
 ---
 
-## โครงสร้างไฟล์มาตรฐาน RBRU
+## Common Mistakes
 
-```
-ProjectName_LaTeX/
-├── main.tex                    # Entry point — \include chapters
-├── styles/
-│   └── projectname_style.sty   # สี, fonts, custom environments
+1. **ลืมตรวจสีก่อน compile** — ทุกครั้งที่เพิ่ม TikZ ใหม่ ให้ grep หาชื่อสีและตรวจใน `.sty`
+2. **Colon ท้ายประโยค** — ภาษาไทยวิชาการไม่ใช้ `:` ท้าย `ได้แก่` และ `ดังนี้`
+3. **itemize แทน enumerate** ในแผนบริหารการสอน — ใช้ enumerate เสมอสำหรับ 4 หัวข้อหลัก
+4. **ลืม \noindent** — หัวข้อในแผนบริหารการสอนต้องชิดซ้ายเสมอ
+5. **Compile ครั้งเดียว** — ต้อง compile อย่างน้อย 2 รอบเพื่อให้ ToC, index และ references ถูกต้อง
+6. **ลืมซิงค์แผนการสอนใน syllabus.tex** เมื่อมีการปรับลำดับบท — ต้องตรวจเช็กตารางสัปดาห์ใน syllabus ทุกครั้ง
+7. **มีจุด (`.`) หลังหมายเลขบทใน Header** — หากไม่นิยาม `\renewcommand{\chaptermark}`, LaTeX `book.cls` จะใส่ `บทที่ X.` อัตโนมัติ ให้ใช้ `\chaptertitlename\ \thechapter\quad` เสมอ เพื่อให้หัวกระดาษเป็น `บทที่ X [ชื่อบท]` อย่างถูกต้องสวยงามm environments
 ├── frontmatter/
 │   ├── cover.tex               # ปก TikZ
 │   ├── title.tex               # หน้าชื่อเรื่อง
