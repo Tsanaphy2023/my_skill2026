@@ -218,15 +218,39 @@ REPLACEMENTS = [
     \renewcommand{\subsubsection}{\global\setlength{\parindent}{3.75cm}\rbruorigsubsubsection}
     ```
 
-#### 4.7 แผนบริหารการสอนประจำบท (Lesson Plan per Chapter):
+#### 4.7 แผนบริหารการสอนประจำบท (Modular Lesson Plan Boxes & 2-Page Standard):
 - ทุกบทเรียนต้องมี **แผนบริหารการสอนประจำบทที่ X** (`\section*{แผนบริหารการสอนประจำบทที่ X}`) พร้อม `\addcontentsline{toc}{section}{แผนบริหารการสอนประจำบทที่ X}`
-- ประกอบด้วย 5 องค์ประกอบหลักตามมาตรฐาน RBRU (ห้ามใส่เครื่องหมาย `:` ท้ายหัวข้อ):
-  1. `\noindent\textbf{หัวข้อเนื้อหาประจำบท}` (ใช้ `\begin{enumerate}`)
-  2. `\noindent\textbf{วัตถุประสงค์เชิงพฤติกรรม}` (ใช้ `\begin{enumerate}`)
-  3. `\noindent\textbf{กิจกรรมการเรียนการสอน}` (ใช้ `\begin{enumerate}`)
-  4. `\noindent\textbf{สื่อการเรียนการสอน}` (ใช้ `\begin{enumerate}`)
-  5. `\noindent\textbf{การประเมินผล}` (ใช้ `\begin{enumerate}`)
-- จบด้วย `\newpage` ก่อนเริ่มเนื้อหาหัวข้อแรกของบทเรียน
+- **โครงสร้างแบบแยกกล่องอิสระ (Modular `planbox`) จัดพอดี 2 หน้ากระดาษ:**
+  - **ปัญหาเดิมที่ต้องเลี่ยง:** การรวมทุกหัวข้อไว้ในกล่องเดียวขนาดใหญ่ (`lessonplanbox`) ทำให้กล่องสูงเกินหน้ากระดาษและถูกผลักไปอยู่หน้าถัดไป ส่งผลให้ชื่อบทอยู่โดดเดี่ยวคนละหน้า และหัวข้อด้านล่างถูกตัดตกขอบกระดาษ
+  - **แนวทางแก้ปัญหามาตรฐาน (Best Practice):** แยก 5 องค์ประกอบหลักออกเป็น 5 กล่องย่อย `planbox` ที่มีแถบหัวข้อสีประจำตัว สวยงาม ชัดเจน และจัดวางแบบ 2 หน้ากระดาษดังนี้:
+    - **หน้า 1 ของบท:** แบนเนอร์ชื่อบท + `\section*{แผนบริหารการสอนประจำบทที่ X}` + **กล่อง 1 (หัวข้อเนื้อหาประจำบท)** + **กล่อง 2 (วัตถุประสงค์เชิงพฤติกรรม)**
+    - คั่นด้วย `\newpage`
+    - **หน้า 2 ของบท:** **กล่อง 3 (วิธีสอนและกิจกรรมการเรียนการสอน)** + **กล่อง 4 (สื่อการเรียนการสอน)** + **กล่อง 5 (การวัดและประเมินผล)**
+    - จบด้วย `\clearpage` ก่อนเริ่มเนื้อหาหัวข้อแรกของบทเรียน (เช่น `\section{...}`) ในหน้า 3
+- ตัวอย่างคำสั่ง LaTeX สำหรับกล่อง `planbox`:
+  ```latex
+  \newtcolorbox{planbox}[2][]{
+      enhanced,
+      breakable,
+      colback=white,
+      colframe=rbruNavy,
+      fonttitle=\bfseries\fontsize{11}{14}\selectfont\color{white},
+      coltitle=white,
+      colbacktitle=rbruNavy,
+      title={#2},
+      arc=1.5mm,
+      boxrule=0.8pt,
+      leftrule=3.5mm,
+      top=3pt, bottom=3pt, left=8pt, right=8pt,
+      titlerule=0pt,
+      toptitle=2.5pt, bottomtitle=2.5pt,
+      drop shadow=black!5,
+      before skip=3.5pt,
+      after skip=3.5pt,
+      #1
+  }
+  ```
+- ในแต่ละกล่อง ให้ใช้ `\begin{enumerate}[topsep=2pt, itemsep=1pt, partopsep=0pt, parsep=0pt, leftmargin=1.5em]` เพื่อความกระชับและเป็นระเบียบเรียบร้อย ป้องกันปัญหาคำกำพร้าและไม่ใส่เครื่องหมาย `:` ท้ายชื่อหัวข้อ
 
 #### 4.8 รูปแบบคำบรรยายภาพและตาราง (Caption Typography):
 - **มาตรฐานตัวอักษร:** คำนำหน้า (Label) เช่น "ภาพที่ X.X" หรือ "ตารางที่ X.X" ต้องเป็น **ตัวหนา** (`labelfont={bf}`) ส่วนข้อความชื่อภาพและตาราง ต้องเป็น **ตัวบางปกติ** (`textfont={normalfont}`)
