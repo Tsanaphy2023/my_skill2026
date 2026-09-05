@@ -537,6 +537,28 @@ xelatex -interaction=nonstopmode main.tex 2>&1 | grep -E "(Output written|^!|Fat
 6. **à¸�à¸£à¸“à¸µà¸¨à¸¶à¸�à¸©à¸²à¸«à¹‰à¸­à¸‡à¸—à¸”à¸¥à¸­à¸‡à¹€à¸ªà¸¡à¸·à¸­à¸™à¸ˆà¸£à¸´à¸‡à¸ªà¸°à¹€à¸•à¹‡à¸¡à¸¨à¸¶à¸�à¸©à¸²à¸‚à¸±à¹‰à¸™à¸ªà¸¹à¸‡:**
    - à¸«à¹‰à¸­à¸‡à¸›à¸�à¸´à¸šà¸±à¸•à¸´à¸�à¸²à¸£à¸—à¸±à¸¨à¸™à¸¨à¸²à¸ªà¸•à¸£à¹Œà¹€à¸ªà¸¡à¸·à¸­à¸™ (Virtual Optics Bench), à¸–à¸±à¸‡à¸„à¸¥à¸·à¹ˆà¸™à¹€à¸ªà¸¡à¸·à¸­à¸™, à¸§à¸‡à¸ˆà¸£à¸­à¸´à¹€à¸¥à¹‡à¸�à¸—à¸£à¸­à¸™à¸´à¸�à¸ªà¹Œ, à¹�à¸¥à¸°à¸�à¸²à¸£à¸ˆà¸³à¸¥à¸­à¸‡à¸£à¸°à¸šà¸šà¸”à¸²à¸§à¸„à¸¹à¹ˆà¸—à¸²à¸‡à¸”à¸²à¸£à¸²à¸¨à¸²à¸ªà¸•à¸£à¹Œà¸Ÿà¸´à¸ªà¸´à¸�à¸ªà¹Œ (Roche Potentials)
 
+### Phase 13: มาตรฐานการออกแบบปกหนังสือวิชาการสมัยใหม่ (Modern Academic Cover Design Standard)
+
+1. **การออกแบบหน้าปกด้วย TikZ 100% สไตล์ Deep Obsidian Spatial Hologram:**
+   - ใช้โทนสีมืดลึกและแสงนีออน (`coverDark` `#040714`, `coverNeonCyan` `#22D3EE`, `coverTeal` `#0D9488`, `coverGold` `#F59E0B`, `coverAmber` `#FBBF24`)
+   - ผสมผสานองค์ประกอบเวกเตอร์ 3 มิติเชิงเรขาคณิต (Perspective Floor Grid, 3D Tesseract Wireframe, แกนพิกัดสามมิติ $+X, +Y, +Z$, 6DoF Orbit Rings, และ MediaPipe Hand Tracking Rig 21 จุดร่วม พร้อมตัวชี้วัดระยะพิกัด $d_{\text{pinch}}$)
+   - การจัดวางการ์ดลอยแก้วรมดำ (Frosted Glassmorphism Floating Cards):
+     - **ขอบบน:** Institutional Identity Header (โครงการตำราวิชาการเฉลิมพระเกียรติ มรภ.รำไพพรรณี) ซ้ายบน และ Category Tag Ribbon ขวาบน
+     - **กล่องชื่อเรื่องหลัก (Main Title Card):** ใช้ `tcolorbox` กำหนด `width=17.4cm`, เส้นขอบซ้ายหนาพิเศษ `leftrule=7mm`, โค้งมน `arc=5mm`, ชื่อเรื่องภาษาไทยขนาดใหญ่ สว่างชัดเจน ควบคู่กับชื่อภาษาอังกฤษและ Subtitle สรุปสาระสำคัญ
+     - **ส่วนล่าง:** กล่องประวัติผู้เขียน (Author Profile Card) ซ้ายล่าง ระบุคุณวุฒิและสาขาวิชา และกล่องประทับตราปีพิมพ์/ฉบับ (Year & Edition Stamp) ขวาล่าง
+2. **การตั้งค่าฟอนต์ใน `main.tex`:**
+   - เมื่อใช้ XeLaTeX กับฟอนต์ภาษาไทย (เช่น Sarabun) **ต้องกำหนด `\setsansfont{Sarabun}` ควบคู่กับ `\setmainfont{Sarabun}` เสมอ**
+   - หากไม่กำหนด `\setsansfont` การเรียกใช้ `\sffamily` หรือ sans-serif environment ใดๆ ใน TikZ หรือ tcolorbox จะตกกลับไปใช้ `lmsans` ซึ่งไม่มี glyphs ภาษาไทย ส่งผลให้เกิดข้อผิดพลาด Missing character ภาษาไทยทั้งหมด
+3. **การเปลี่ยนชื่อเรื่องหนังสือทั้งเล่มอย่างเป็นเอกภาพ (Global Title Synchronization):**
+   - ต้องปรับแก้ชื่อหนังสือให้ตรงกันครบทั้ง 6 จุดสำคัญ ได้แก่:
+     1. `frontmatter/cover.tex` (หน้าปก)
+     2. `frontmatter/title.tex` (หน้าชื่อเรื่องภายในเล่ม)
+     3. `frontmatter/preface.tex` (คำนำ)
+     4. `frontmatter/acknowledgements.tex` (กิตติกรรมประกาศ)
+     5. `frontmatter/syllabus.tex` (แผนบริหารการสอน/คำอธิบายรายวิชา)
+     6. `main.tex` (`pdftitle` ใน hyperref)
+     7. `styles/*.sty` (Running Header ซ้าย: `\fancyhead[LE]`)
+
 ---
 
 ## Common Mistakes
