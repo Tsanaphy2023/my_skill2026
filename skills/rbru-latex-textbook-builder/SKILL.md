@@ -459,6 +459,31 @@ ProjectName_LaTeX/
 
 ---
 
+### Phase 12: การจัดทำตำรา OpenXR และการจำลองเชิงสะเต็ม (OpenXR and Spatial Computing for STEM Education)
+
+1. **สถาปัตยกรรม OpenXR และการประมวลผลเชิงพื้นที่:**
+   - โครงสร้าง 3 เลเยอร์: Application Layer, OpenXR Loader, และ Hardware Runtime (Monado, SteamVR, Meta XR)
+   - วงรอบการทำงาน (Instance $\to$ System $\to$ Session $\to$ Frame Loop)
+   - ปริภูมิอ้างอิงเชิงพื้นที่ 3 มิติ: `XR_REFERENCE_SPACE_TYPE_VIEW`, `LOCAL`, `STAGE` (Room-scale)
+2. **การปฏิสัมพันธ์เชิงพื้นที่ผ่านการติดตามมือ 21 จุดร่วม (21-Joint Hand Tracking):**
+   - ส่วนขยายมาตรฐาน `XR_EXT_hand_tracking` ลำดับชั้นกระดูก Wrist, Thumb, Index, Middle, Ring, Little
+   - ขั้นตอนวิธีคำนวณระยะจีบนิ้ว (Pinch Distance) แบบ Hysteresis Thresholding ป้องกันการสั่นไหว
+   - วิศวกรรมลูปแบบไร้ขยะหน่วยความจำ (Zero-GC Loop Engineering) โดยใช้ In-place Array Operations รักษา 90 FPS
+3. **เอนจินฟิสิกส์และการจำลองสะเต็ม (STEM Physics Simulations):**
+   - การเลือกใช้อินทิเกรเตอร์เชิงตัวเลข: Velocity Verlet และ Semi-Implicit Euler เพื่ออนุรักษ์พลังงานกล
+   - การคำนวณการชนของวัตถุแข็งเกร็งด้วยสมการการดล (Impulse Response) และสัมประสิทธิ์การคืนตัว
+   - การจำลองระบบการสั่นแบบหน่วง (Underdamped, Critically Damped, Overdamped)
+4. **การประมวลผลทางวิทยาศาสตร์ด้วย Python และ PyOpenXR:**
+   - การเชื่อมต่อผ่าน Ctypes FFI และการคำนวณสนามเวกเตอร์ความเร็วสูงด้วย NumPy
+   - สถาปัตยกรรมแยกเธรดการคำนวณฟิสิกส์ (Simulation Thread) ออกจากเธรดการเรนเดอร์ภาพ (Render Thread)
+5. **การบูรณาการปัญญาประดิษฐ์และคอมพิวเตอร์วิทัศน์:**
+   - การประยุกต์ใช้โมเดล MediaPipe Hands และ Edge AI
+   - การกรองสัญญาณรบกวนของตำแหน่งมือด้วย One-Euro Filter ($1\text{€}$ Filter) ปรับความถี่ตัดตามความเร็ว
+6. **กรณีศึกษาห้องทดลองเสมือนจริงสะเต็มศึกษาขั้นสูง:**
+   - ห้องปฏิบัติการทัศนศาสตร์เสมือน (Virtual Optics Bench), ถังคลื่นเสมือน, วงจรอิเล็กทรอนิกส์, และการจำลองระบบดาวคู่ทางดาราศาสตร์ฟิสิกส์ (Roche Potentials)
+
+---
+
 ## Common Mistakes
 
 1. **ลืมตรวจสีก่อน compile** — ทุกครั้งที่เพิ่ม TikZ ใหม่ ให้ grep หาชื่อสีและตรวจใน `.sty`
@@ -467,3 +492,4 @@ ProjectName_LaTeX/
 4. **ลืม \noindent** — หัวข้อในแผนบริหารการสอนต้องชิดซ้ายเสมอ
 5. **Compile ครั้งเดียว** — ต้อง compile อย่างน้อย 2 รอบเพื่อให้ ToC, index และ references ถูกต้อง
 6. **ลืมซิงค์แผนการสอนใน syllabus.tex** เมื่อมีการปรับลำดับบท — ต้องตรวจเช็กตารางสัปดาห์ใน syllabus ทุกครั้ง
+
