@@ -117,6 +117,9 @@ TAKING IT FURTHER
 [Connect to deeper physics / modern physics / engineering / real-world application]
 ```
 
+> [!IMPORTANT]
+> **มาตรฐานภาษาไทยวิชาการ (RBRU Standards):** ห้ามใส่เครื่องหมายทวิภาค (`:`) หลังป้ายกำกับ เช่น `\textbf{โจทย์}`, `\textbf{PICTURE}`, `\textbf{SOLVE}`, `\textbf{CHECK}`, `\textbf{ระดับพื้นฐาน}` และห้ามใส่ `:` ท้ายขั้นตอนคำนวณ เช่น `1. [คำอธิบายขั้นตอน]` รวมถึงห้ามใส่วงเล็บภาษาอังกฤษในชื่อหัวข้อ `\section`, `\subsection`
+
 ### Template C-C-A-F (ใช้กับคู่มือเฉลย)
 
 ```
