@@ -71,11 +71,11 @@ description: สกิลสำหรับจัดรูปแบบหนั�
         \bottomrule
     \end{tabularx}
     ```
-  - วางคำบรรยายตาราง (`\caption{...}`) ไว้ **ด้านบน** ของตารางเสมอ พร้อมกำหนด `\label{tab:...}`
+  - วางคำบรรยายตาราง (`\caption{...}`) ไว้ **ด้านบน** และ **ชิดขอบขวา** ของตาราง/หน้ากระดาษ (Flush Right) เสมอ พร้อมกำหนด `\label{tab:...}`
   - กำหนดหมายเลขตารางตามบทเรียน **ตารางที่ X.X** (เช่น ตารางที่ 1.1, ตารางที่ 2.1) ด้วยคำสั่ง `\renewcommand{\thetable}{\thechapter.\arabic{table}}`
-  - กำหนดให้คำว่า **ตารางที่ X.X** เป็น **ตัวหนา** (`labelfont={bf}`) และ **ชื่อตาราง** เป็น **ตัวบาง/ปกติ** (`textfont={normalfont}`):
+  - กำหนดให้คำว่า **ตารางที่ X.X** เป็น **ตัวหนา** (`labelfont={bf}`) และ **ชื่อตาราง** เป็น **ตัวบาง/ปกติ** (`textfont={normalfont}`) พร้อมตั้งค่าชิดขอบขวา:
     ```latex
-    \captionsetup[table]{position=top, skip=6pt, labelfont={bf}, textfont={normalfont}, labelsep=thaisep}
+    \captionsetup[table]{position=top, skip=6pt, labelfont={bf}, textfont={normalfont}, labelsep=thaisep, justification=raggedleft, singlelinecheck=false}
     ```
   - สำหรับตารางในส่วนนำ (Frontmatter เช่น แผนการสอน 15 สัปดาห์ใน `syllabus.tex`) ให้ใช้ `\caption*{...}` เพื่อไม่ให้มีหมายเลขเดี่ยว (เช่น ตารางที่ 1) ปะปนในสารบัญตาราง
   - ทุกบทต้องมีตารางสรุปเปรียบเทียบหรือตารางสูตรอย่างน้อย 1-2 ตาราง

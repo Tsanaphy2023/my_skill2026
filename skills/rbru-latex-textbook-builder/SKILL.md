@@ -276,7 +276,7 @@ REPLACEMENTS = [
 \RequirePackage{caption}
 \DeclareCaptionLabelSeparator{thaisep}{\quad}
 \captionsetup{labelsep=thaisep}
-\captionsetup[table]{position=top, skip=6pt, labelfont={bf,color=primaryThemeColor}, textfont={normalfont}, labelsep=thaisep}
+\captionsetup[table]{position=top, skip=6pt, labelfont={bf,color=primaryThemeColor}, textfont={normalfont}, labelsep=thaisep, justification=raggedleft, singlelinecheck=false}
 \captionsetup[figure]{position=bottom, skip=8pt, labelfont={bf,color=primaryThemeColor}, textfont={normalfont}, labelsep=thaisep}
 ```
 
